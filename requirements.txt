@@ -1,0 +1,7 @@
+fastapi
+alembic
+psycopg2-binary
+SQLAlchemy
+uvicorn
+decouple
+black

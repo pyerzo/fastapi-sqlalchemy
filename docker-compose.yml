@@ -1,0 +1,34 @@
+version: "3.9"
+
+volumes:
+  postgres_data: {}
+  postgres_data_backups: {}
+
+services:
+  fastapi-sqlalchemy-api:
+    build: .
+    image: fastapi-sqlalchemy-api:0.1
+    container_name: fastapi-sqlalchemy
+    depends_on:
+      - fastapi-sqlalchemy-database
+    restart: unless-stopped
+    command: /start
+    volumes:
+      - ./app:/code/app
+    env_file:
+      - .env
+    ports:
+      - 8080:80
+      - 5679:5678
+
+  fastapi-sqlalchemy-database:
+    image: postgres:15
+    container_name: fastapi-sqlalchemy-database
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_backups:/backups
+    env_file:
+      - .env
+    ports:
+      - 5433:5432
